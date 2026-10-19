@@ -38,6 +38,7 @@ a{color:inherit}
 .wrap{max-width:720px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 h1,h2,h3{text-wrap:balance;margin:0}
 p{margin:0}
+.tm{font-size:.42em;line-height:0;vertical-align:super;margin-left:.08em;letter-spacing:0}
 .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 :focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
 
@@ -115,9 +116,11 @@ section.ch{padding-block:56px 8px}
 .chart .bar-slow{fill:var(--muted);opacity:.55}
 .chart .bar-fast{fill:url(#gbar)}
 .chart .val{font:600 11px var(--f-body);fill:var(--fg)}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
-.tabs button{border:0;background:transparent;color:var(--muted);font:600 13px/1 var(--f-body);letter-spacing:.06em;padding:10px 4px;border-radius:999px;cursor:pointer}
-.tabs button[aria-selected="true"]{background:var(--surface-2);color:var(--fg);box-shadow:inset 0 0 0 1px var(--line)}
+.tabs{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:16px;background:#05040a;border:1px solid var(--line);border-radius:999px;padding:4px;box-shadow:inset 0 2px 6px rgba(0,0,0,.7)}
+.tab-ind{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px) / 3);border-radius:999px;background:var(--grad);box-shadow:0 0 18px rgba(105,227,254,.35);transform:translateX(calc(var(--i,0) * 100%));transition:transform .32s cubic-bezier(.3,.7,.2,1)}
+.tabs button{position:relative;z-index:1;border:0;background:transparent;color:var(--muted);font:600 13px/1 var(--f-body);letter-spacing:.06em;padding:11px 4px;border-radius:999px;cursor:pointer;transition:color .25s}
+.tabs button:not([aria-selected="true"]):hover{color:var(--fg)}
+.tabs button[aria-selected="true"]{color:#0a0817}
 .panel{margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
 .panel .pic{background:radial-gradient(120% 90% at 50% 100%,rgba(90,82,227,.35),transparent 70%);display:grid;place-items:center;padding:18px 18px 0;height:210px}
 .panel .pic img{max-height:190px;width:auto;object-fit:contain}
@@ -136,7 +139,7 @@ section.ch{padding-block:56px 8px}
 .rung header{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
 .rung h3{font-size:17px;font-weight:600}
 .rung .lv{font-family:var(--f-display);font-size:11px;color:var(--lav);white-space:nowrap}
-.rung.top{background:linear-gradient(140deg,rgba(105,227,254,.12),rgba(90,82,227,.18));border-color:rgba(105,227,254,.35)}
+.rung.peak{background:linear-gradient(140deg,rgba(105,227,254,.12),rgba(90,82,227,.18));border-color:rgba(105,227,254,.35)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 
 /* Roadmap */
@@ -145,7 +148,8 @@ section.ch{padding-block:56px 8px}
 .yr header{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
 .yr .y{font-family:var(--f-display);font-size:24px}
 .yr .gen{font-size:13px;color:var(--muted);text-align:right}
-.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.road-note{margin-top:12px;font-size:13px;color:var(--muted)}
 .metrics div{background:var(--surface-2);border-radius:10px;padding:10px;min-width:0}
 .metrics b{display:block;font-family:var(--f-display);font-weight:400;font-size:15px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .metrics span{display:block;font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-top:4px}
@@ -173,8 +177,8 @@ section.ch{padding-block:56px 8px}
 table{width:100%;border-collapse:collapse;font-size:14px;min-width:340px}
 th,td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
 tr:last-child td{border-bottom:0}
-thead th{font-family:var(--f-display);font-weight:400;font-size:13px;color:var(--cyan);background:var(--surface-2)}
-tbody th{font-weight:500;color:var(--muted);font-size:13px;width:38%}
+thead th{white-space:nowrap;font-family:var(--f-display);font-weight:400;font-size:13px;color:var(--cyan);background:var(--surface-2)}
+tbody th{font-weight:500;color:var(--muted);font-size:13px;width:32%}
 td{font-variant-numeric:tabular-nums}
 .shared{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
 
@@ -191,8 +195,10 @@ td{font-variant-numeric:tabular-nums}
 .contact > p{color:var(--muted);margin-top:10px}
 form{display:grid;gap:12px;margin-top:20px}
 label{display:grid;gap:6px;font-size:13px;color:var(--muted)}
-input,select{font:400 16px var(--f-body);color:var(--fg);background:rgba(7,6,13,.6);border:1px solid var(--line);border-radius:10px;padding:12px;width:100%}
-input:focus,select:focus{outline:none;border-color:var(--cyan)}
+.opt{color:var(--muted);opacity:.75}
+textarea{resize:vertical;min-height:96px;line-height:1.5}
+input,select,textarea{font:400 16px var(--f-body);color:var(--fg);background:rgba(7,6,13,.6);border:1px solid var(--line);border-radius:10px;padding:12px;width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--cyan)}
 .form-msg{font-size:14px;color:var(--cyan);min-height:1.4em}
 footer{padding-block:40px 110px;color:var(--muted);font-size:12px;display:grid;gap:6px;text-align:center}
 footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-spacing:.1em}
@@ -207,6 +213,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
   .proof{grid-template-columns:repeat(4,1fr)}
   .proof .wide{grid-column:1/-1}
   .why{grid-template-columns:repeat(3,1fr)}
+  .metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
   .partners{grid-template-columns:repeat(4,1fr)}
   form{grid-template-columns:1fr 1fr}
   form .full{grid-column:1/-1}
@@ -242,13 +249,13 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
 </header>
 
 <main id="top">
-  <section class="hero" aria-labelledby="h1">
+  <section class="hero" id="intro" aria-labelledby="h1">
     <canvas id="flow" aria-hidden="true"></canvas>
     <div class="wrap">
       <h1 id="h1"><span class="grad-text">AI Factory</span><br>delivered at speed and scale</h1>
       <p class="lede">From site planning and design to construction, IT deployment and operations. One partner integrates the facility, the hardware and the supply chain.</p>
       <div class="hero-cta">
-        <a class="btn" href="#contact">Book a meeting</a>
+        <a class="btn" href="#contact">Talk to our experts</a>
         <a class="btn ghost" href="#reference">See reference designs</a>
       </div>
 
@@ -315,7 +322,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
             <ul><li class="chip">Commissioning testing (L1–L5)</li><li class="chip">Construction inspection</li><li class="chip">As-built inspection</li></ul></details></li>
         <li><span class="n">05</span>
           <details><summary><div><b>IT deployment</b><span>Racks in, network up</span></div></summary>
-            <ul><li class="chip">IT equipment deployment</li><li class="chip">IT equipment test</li><li class="chip">Network bring-up</li></ul></details></li>
+            <ul><li class="chip">IT equipment deployment</li><li class="chip">IT equipment testing</li><li class="chip">Network bring-up</li></ul></details></li>
         <li><span class="n">06</span>
           <details><summary><div><b>AI services &amp; operations</b><span>Keep the factory producing</span></div></summary>
             <ul><li class="chip">AI compute service</li><li class="chip">AI model service</li><li class="chip">AI applications</li><li class="chip">AI Factory operations</li><li class="chip">Maintenance service</li></ul></details></li>
@@ -348,7 +355,8 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
         </svg>
       </div>
 
-      <div class="tabs" role="tablist" aria-label="Build types">
+      <div class="tabs" role="tablist" aria-label="Build types" style="--i:2">
+        <span class="tab-ind" aria-hidden="true"></span>
         <button role="tab" id="t-sdc" aria-controls="p-sdc" aria-selected="false" tabindex="-1">STANDARD</button>
         <button role="tab" id="t-cdc" aria-controls="p-cdc" aria-selected="false" tabindex="-1">CONTAINER</button>
         <button role="tab" id="t-hdc" aria-controls="p-hdc" aria-selected="true">HYBRID</button>
@@ -396,7 +404,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
           <header><h3>AI server</h3><span class="lv">L10 · L11</span></header>
           <div class="chips"><span class="chip">Compute tray</span><span class="chip">Switch tray</span><span class="chip">Storage tray</span><span class="chip">Rack</span></div>
         </div>
-        <div class="rung top">
+        <div class="rung peak">
           <header><h3>AI DC ecosystem</h3><span class="lv">L12+</span></header>
           <div class="chips"><span class="chip">IT</span><span class="chip">HVAC</span><span class="chip">Power</span><span class="chip">Structure &amp; auxiliary</span></div>
         </div>
@@ -418,6 +426,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
             <div><b>&lt; 1.30</b><span>PUE</span></div>
             <div><b>87%</b><span>Liquid cooled</span></div>
             <div><b>—</b><span>WUE</span></div>
+            <div><b>Baseline</b><span>Cooling energy</span></div>
           </div>
           <p class="pw">Power: <b>480 VAC</b></p>
         </div>
@@ -427,8 +436,9 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
             <div><b>&lt; 1.20</b><span>PUE</span></div>
             <div><b>96%</b><span>Liquid cooled</span></div>
             <div><b>&lt; 1</b><span>WUE</span></div>
+            <div><b>−15%</b><span>Cooling energy vs 2026</span></div>
           </div>
-          <p class="pw">Power: <b>HVDC 800 V with power center</b> · cooling equipment −15%</p>
+          <p class="pw">Power: <b>HVDC 800 V with power center</b></p>
         </div>
         <div class="yr goal">
           <header><span class="y">2028</span><span class="gen">Vera Rubin next-gen</span></header>
@@ -436,10 +446,12 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
             <div><b>&lt; 1.10</b><span>PUE</span></div>
             <div><b>TBC</b><span>Liquid cooled</span></div>
             <div><b>≈ 0</b><span>WUE</span></div>
+            <div><b>−30%</b><span>Cooling energy vs 2026</span></div>
           </div>
-          <p class="pw">Power: <b>HVDC 800 V with SST</b> · cooling equipment −30%</p>
+          <p class="pw">Power: <b>HVDC 800 V with SST</b></p>
         </div>
       </div>
+      <p class="road-note">2027 and 2028 figures are design targets. Cooling energy is compared with our 2026 GB300 design.</p>
     </div>
   </section>
 
@@ -447,7 +459,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
     <div class="wrap">
       <div class="ch-head">
         <p class="k">Digital twin</p>
-        <h2 id="twin-h">Built virtually first with NVIDIA Omniverse DSX</h2>
+        <h2 id="twin-h">Built virtually first with NVIDIA<sup class="tm">®</sup> Omniverse DSX<sup class="tm">™</sup></h2>
         <p>Our 27 MW AI Factory has a full digital twin for engineering validation and deployment.</p>
       </div>
       <figure><img src="img/twin.webp" alt="Digital twin view of the Foxconn 27 MW data center" width="1000" height="576" loading="lazy"></figure>
@@ -478,7 +490,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
             <tr><th scope="row">IT load (incl. network)</th><td>22 MW</td><td>2.8 MW</td></tr>
             <tr><th scope="row">GB300 racks</th><td>144<br><small style="color:var(--muted)">16 per POD</small></td><td>16</td></tr>
             <tr><th scope="row">GPUs</th><td>10,368</td><td>1,152</td></tr>
-            <tr><th scope="row">Architecture</th><td>9 ComputePOD + 1 CorePOD</td><td>1 SuperPOD</td></tr>
+            <tr><th scope="row">Architecture</th><td>9&nbsp;ComputePOD<br>+&nbsp;1&nbsp;CorePOD</td><td>1&nbsp;SuperPOD</td></tr>
             <tr><th scope="row">Area</th><td>8,232 m²<br><small style="color:var(--muted)">147 × 56 m data hall</small></td><td>4,183 m²<br><small style="color:var(--muted)">89 × 47 m total</small></td></tr>
             <tr><th scope="row">Power module</th><td>5 MW</td><td>0.5 MW</td></tr>
           </tbody>
@@ -502,14 +514,13 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
         <div><h3>Power</h3><p>ABB · Delta · Eaton · Siemens · Caterpillar · Kohler · TECO</p></div>
         <div><h3>EPC &amp; commissioning</h3><p>Exyte · WSP · Uptime Institute · TECO</p></div>
       </div>
-      <p class="note">Draft: partner names were transcribed from the slide. Replace with approved logos once usage rights are confirmed.</p>
     </div>
   </section>
 
   <div class="wrap">
     <section class="contact" id="contact" aria-labelledby="contact-h">
-      <h2 id="contact-h">Plan your AI Factory with us</h2>
-      <p>Leave your details and our AI Factory team will follow up after the show with the full sales kit.</p>
+      <h2 id="contact-h">Let's discuss your AI Factory project</h2>
+      <p>Share a few details and our AI DC team will review your inquiry and get in touch.</p>
       <form id="lead" novalidate>
         <label>Name<input id="f-name" name="name" autocomplete="name" required></label>
         <label>Company<input id="f-company" name="company" autocomplete="organization" required></label>
@@ -523,7 +534,20 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
             <option>AI services &amp; operations</option>
           </select>
         </label>
-        <button class="btn full" type="submit">Send and request the sales kit</button>
+        <label class="full"><span>Project scale <span class="opt">(optional)</span></span>
+          <select id="f-scale" name="scale">
+            <option value="">Select a range</option>
+            <option>Under 5 MW</option>
+            <option>5–20 MW</option>
+            <option>20–100 MW</option>
+            <option>Over 100 MW</option>
+            <option>Not sure yet</option>
+          </select>
+        </label>
+        <label class="full"><span>Message <span class="opt">(optional)</span></span>
+          <textarea id="f-msg" name="message" rows="4" placeholder="Tell us about your site, timeline or requirements"></textarea>
+        </label>
+        <button class="btn full" type="submit">Submit inquiry</button>
         <p class="form-msg full" id="form-msg" role="status"></p>
       </form>
     </section>
@@ -534,11 +558,10 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
   <div class="wrap" style="display:grid;gap:6px">
     <p class="inf">3+3+3=∞</p>
     <p>© 2026 Hon Hai Precision Industry Co., Ltd. All rights reserved.</p>
-    <p class="draft">Draft for internal review</p>
   </div>
 </footer>
 
-<div class="float hide" id="float"><a class="btn" href="#contact">Book a meeting with our AI Factory team</a></div>
+<div class="float hide" id="float"><a class="btn" href="#contact">Contact our AI DC team</a></div>
 
 <script>
 (function(){
@@ -578,14 +601,20 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
 
   /* Build-type tabs */
   var tabs=[].slice.call(document.querySelectorAll('[role=tab]'));
-  function sel(b){tabs.forEach(function(o){var on=o===b;o.setAttribute('aria-selected',on);o.tabIndex=on?0:-1;document.getElementById(o.getAttribute('aria-controls')).hidden=!on})}
+  function sel(b){b.parentNode.style.setProperty('--i',tabs.indexOf(b));tabs.forEach(function(o){var on=o===b;o.setAttribute('aria-selected',on);o.tabIndex=on?0:-1;document.getElementById(o.getAttribute('aria-controls')).hidden=!on})}
   tabs.forEach(function(b,i){b.addEventListener('click',function(){sel(b)});b.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowLeft'){var n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];sel(n);n.focus()}})});
 
   /* Chapter rail highlight */
   var links=[].slice.call(document.querySelectorAll('.rail a'));
   var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  map.intro=map.why;
+  var lockUntil=0,cur=null;
+  function setOn(a,smooth){if(!a||a===cur)return;cur=a;links.forEach(function(l){l.classList.toggle('on',l===a)});var rl=a.parentNode,ar=a.getBoundingClientRect(),rr=rl.getBoundingClientRect();rl.scrollTo({left:rl.scrollLeft+(ar.left-rr.left)-rl.clientWidth/2+ar.width/2,behavior:smooth&&!reduce?'smooth':'auto'})}
+  setOn(map.why,false);
+  var hdr=document.querySelector('.top');
+  [].slice.call(document.querySelectorAll('a[href^="#"]')).forEach(function(a){a.addEventListener('click',function(ev){var id=a.getAttribute('href').slice(1),el=document.getElementById(id);if(!el)return;ev.preventDefault();var y=id==='top'?0:el.getBoundingClientRect().top+window.pageYOffset-hdr.offsetHeight-12;lockUntil=Date.now()+1000;if(map[id])setOn(map[id],false);window.scrollTo({top:Math.max(0,y),behavior:reduce?'auto':'smooth'})})});
   if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.remove('on')});var a=map[e.target.id];if(a){a.classList.add('on');var rl=a.parentNode,ar=a.getBoundingClientRect(),rr=rl.getBoundingClientRect();rl.scrollTo({left:rl.scrollLeft+(ar.left-rr.left)-rl.clientWidth/2+ar.width/2,behavior:reduce?'auto':'smooth'})}}})},{rootMargin:'-45% 0px -50% 0px'});
+    var io=new IntersectionObserver(function(es){if(Date.now()<lockUntil)return;es.forEach(function(e){if(e.isIntersecting)setOn(map[e.target.id],true)})},{rootMargin:'-45% 0px -50% 0px'});
     Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el)io.observe(el)});
     var fl=document.getElementById('float'),vis={};
     var fo=new IntersectionObserver(function(es){es.forEach(function(e){vis[e.target.id]=e.isIntersecting});fl.classList.toggle('hide',!!(vis.why===false&&vis.top0)||!!vis.contact||!!vis.top0)});
@@ -597,7 +626,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
   document.getElementById('lead').addEventListener('submit',function(e){
     e.preventDefault();var f=e.target,m=document.getElementById('form-msg');
     var ok=f.name.value.trim()&&f.company.value.trim()&&/^\S+@\S+\.\S+$/.test(f.email.value.trim());
-    m.textContent=ok?'Draft preview: in the live page this form will send your details to our sales team.':'Please fill in your name, company and a valid work email.';
+    m.textContent=ok?'Preview only: once connected, this form will send your inquiry to our AI DC team.':'Please fill in your name, company and a valid work email.';
   });
 })();
 </script>
