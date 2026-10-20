@@ -35,7 +35,7 @@ html{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.55;font-weight:400;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
 a{color:inherit}
-.wrap{max-width:720px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 h1,h2,h3{text-wrap:balance;margin:0}
 p{margin:0}
 .tm{font-size:.42em;line-height:0;vertical-align:super;margin-left:.08em;letter-spacing:0}
@@ -103,19 +103,23 @@ section.ch{padding-block:56px 8px}
 .steps summary span{display:block;color:var(--muted);font-size:13px}
 .steps summary::after{content:"+";font:300 22px/1 var(--f-body);color:var(--lav);transition:transform .2s}
 .steps details[open] summary::after{transform:rotate(45deg)}
-.steps ul{margin:0;padding:0 16px 14px 16px;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
-.chip{display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1.3;font-size:13px;padding:5px 10px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--fg)}
+.steps ul{margin:0;padding:0 16px 14px 16px;list-style:none;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.chip{display:inline-flex;align-items:center;justify-content:center;text-align:left;line-height:1.3;font-size:13px;padding:5px 10px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line);color:var(--fg)}
 
 /* Build types */
 .chart{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 14px 10px}
 .chart h3{font-size:14px;font-weight:500;color:var(--muted);margin-bottom:6px}
-.chart svg{display:block;width:100%;height:auto}
-.chart .lbl{font:500 12px var(--f-body);fill:var(--fg)}
-.chart .tick{font:400 10px var(--f-body);fill:var(--muted)}
-.chart .grid{stroke:var(--line);stroke-width:1}
-.chart .bar-slow{fill:var(--muted);opacity:.55}
-.chart .bar-fast{fill:url(#gbar)}
-.chart .val{font:600 11px var(--f-body);fill:var(--fg)}
+/* Lead-time chart: 0–48 months maps to 0–100% of each track */
+.ltc{display:grid;padding:4px 14px 2px 0}
+.ltc-row{display:grid;grid-template-columns:80px minmax(0,1fr);align-items:center}
+.ltc-lbl{font-size:13px;font-weight:500;color:var(--fg)}
+.ltc-track{position:relative;height:36px;background:linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/25% 100% repeat-x;box-shadow:inset -1px 0 0 var(--line)}
+.ltc-bar{position:absolute;top:8px;bottom:8px;left:calc(var(--s) / 48 * 100%);width:calc((var(--e) - var(--s)) / 48 * 100%);border-radius:10px;background:var(--grad)}
+.ltc-bar.slow{background:var(--muted);opacity:.55}
+.ltc-val{position:absolute;top:50%;transform:translateY(-50%);left:calc(var(--e) / 48 * 100% + 8px);font-size:12px;font-weight:600;color:var(--fg);white-space:nowrap;font-variant-numeric:tabular-nums}
+.ltc-val.before{left:auto;right:calc(100% - var(--s) / 48 * 100% + 8px)}
+.ltc-axis .ltc-track{height:22px;background:none;box-shadow:none}
+.ltc-axis .ltc-track span{position:absolute;top:4px;left:calc(var(--t) / 48 * 100%);transform:translateX(-50%);font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
 .tabs{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:16px;background:#05040a;border:1px solid var(--line);border-radius:999px;padding:4px;box-shadow:inset 0 2px 6px rgba(0,0,0,.7)}
 .tab-ind{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px) / 3);border-radius:999px;background:var(--grad);box-shadow:0 0 18px rgba(105,227,254,.35);transform:translateX(calc(var(--i,0) * 100%));transition:transform .32s cubic-bezier(.3,.7,.2,1)}
 .tabs button{position:relative;z-index:1;border:0;background:transparent;color:var(--muted);font:600 13px/1 var(--f-body);letter-spacing:.06em;padding:11px 4px;border-radius:999px;cursor:pointer;transition:color .25s}
@@ -192,7 +196,7 @@ td{font-variant-numeric:tabular-nums}
 /* Contact */
 .contact{margin-top:56px;border-radius:20px;padding:24px 18px;background:radial-gradient(120% 100% at 0% 0%,rgba(105,227,254,.18),transparent 60%),radial-gradient(120% 100% at 100% 100%,rgba(161,131,231,.25),transparent 60%),var(--surface);border:1px solid var(--line)}
 .contact h2{font-family:var(--f-display);font-weight:400;font-size:clamp(22px,6vw,30px);line-height:1.2}
-.contact > p{color:var(--muted);margin-top:10px}
+.contact-intro p{color:var(--muted);margin-top:10px}
 form{display:grid;gap:12px;margin-top:20px}
 label{display:grid;gap:6px;font-size:13px;color:var(--muted)}
 .opt{color:var(--muted);opacity:.75}
@@ -209,14 +213,102 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
 .float .btn{width:100%;max-width:420px;padding:14px 18px;font-size:15px}
 .float.hide{transform:translateY(110%);opacity:0;pointer-events:none}
 
+/* Tablet: 640px and up */
 @media (min-width:640px){
+  section.ch{padding-block:72px 8px}
   .proof{grid-template-columns:repeat(4,1fr)}
   .proof .wide{grid-column:1/-1}
   .why{grid-template-columns:repeat(3,1fr)}
+  .tap-hint{display:none}
+  .steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .steps::before{display:none}
+  .steps > li{padding-bottom:0;display:flex}
+  .steps details{flex:1}
+  .steps summary{cursor:default}
+  .steps summary::after{display:none}
   .metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
   .partners{grid-template-columns:repeat(4,1fr)}
+  .contact{padding:32px}
   form{grid-template-columns:1fr 1fr}
   form .full{grid-column:1/-1}
+}
+
+/* Desktop: 1024px and up */
+@media (min-width:1280px){
+  .top .wrap{display:flex;align-items:center;gap:24px;height:64px}
+  .top-row{display:contents}
+  .brand{order:1;flex:none}
+  .rail{order:2;flex:1;min-width:0;padding-block:0;gap:2px}
+  .rail a{padding:6px 10px}
+  .rail a:first-child{margin-left:auto}
+  .rail a:last-child{margin-right:auto}
+  .top-row .btn{order:3;flex:none}
+}
+@media (min-width:1024px){
+
+  .hero{padding-block:128px 56px}
+  .hero canvas{height:760px}
+  .hero .wrap{text-align:center}
+  .hero h1{font-size:clamp(44px,4.4vw,64px);margin:0 auto}
+  .hero h1 br{display:none}
+  .hero h1 .grad-text{display:block;margin-bottom:.62em}
+  .hero .lede{margin:28px auto 0;max-width:40em;font-size:19px}
+  .hero-cta{justify-content:center;margin-top:36px}
+  .hero-img{display:none}
+  .proof{grid-template-columns:1.5fr repeat(4,1fr);margin-top:96px;text-align:left}
+  .proof .wide{grid-column:auto;flex-direction:column;align-items:flex-start;justify-content:center;gap:12px}
+  .proof div{padding:20px 18px}
+
+  section.ch{padding-block:96px 8px}
+  .ch-head{margin-bottom:32px}
+  .ch-head h2{font-size:38px}
+  .ch-head p{max-width:60ch}
+
+  .steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+
+  .build-top{margin-bottom:16px}
+  .ltc-row{grid-template-columns:110px minmax(0,1fr)}
+  .ltc-lbl{font-size:14px}
+  .tabs{display:none}
+  .panels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .panels .panel[hidden]{display:block!important}
+  .panel{margin-top:0}
+  #p-sdc{order:1} #p-cdc{order:2} #p-hdc{order:3}
+  .panel .pic{height:220px}
+
+  .ladder{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+  .rung{align-content:start}
+  .rung + .rung::before{left:-21px;top:50%;width:12px;height:2px}
+  .rung + .rung::after{content:"";position:absolute;left:-10px;top:calc(50% - 4px);border-left:6px solid var(--lav);border-top:5px solid transparent;border-bottom:5px solid transparent}
+
+  .road{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .yr{align-content:start}
+  .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+  .twin-body{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);grid-template-rows:auto 1fr;gap:16px 32px;align-items:start}
+  .twin-body figure{grid-row:span 2}
+  .loop{margin-top:0}
+  .loop-note{text-align:left;margin-top:0}
+
+  .ref-body{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:auto 1fr;gap:12px 24px;align-items:start}
+  .ref-pics{grid-row:span 2;grid-template-columns:1fr;gap:12px;margin-bottom:0}
+  .ref-pics img{aspect-ratio:16/9}
+  .shared{margin-top:0}
+
+  .contact{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:24px 56px;padding:48px;margin-top:96px}
+  .contact h2{font-size:34px}
+  .contact form{margin-top:0}
+
+  .float{display:none}
+  footer{padding-block:48px}
+}
+
+@media (hover:hover){
+  .why article,.panel,.yr,.rung,.loop div,.partners div{transition:border-color .2s}
+  .why article:hover,.panel:hover,.yr:hover,.rung:hover,.loop div:hover,.partners div:hover{border-color:rgba(105,227,254,.45)}
+  .btn{transition:filter .2s}
+  .btn:hover{filter:brightness(1.08)}
+  .rail a:hover{color:var(--fg)}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -305,7 +397,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
       <div class="ch-head">
         <p class="k">What we deliver</p>
         <h2 id="deliver-h">End-to-end, from site to tokens</h2>
-        <p>Tap a stage to see what it covers.</p>
+        <p class="tap-hint">Tap a stage to see what it covers.</p>
       </div>
       <ol class="steps">
         <li><span class="n">01</span>
@@ -332,27 +424,20 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
 
   <section class="ch" id="build" aria-labelledby="build-h">
     <div class="wrap">
+      <div class="build-top">
       <div class="ch-head">
         <p class="k">Build types</p>
         <h2 id="build-h">Choose the build that fits your time to market</h2>
       </div>
       <div class="chart">
         <h3>Estimated lead time for a 10 MW AI DC, in months</h3>
-        <svg viewBox="0 0 340 128" role="img" aria-label="Lead time: Standard DC 36 to 48 months, Containerized DC 12 to 18 months, Hybrid DC 12 to 18 months">
-          <defs><linearGradient id="gbar" x1="0" x2="1"><stop offset="0" stop-color="#69e3fe"/><stop offset="1" stop-color="#a183e7"/></linearGradient></defs>
-          <!-- scale: 0–48 months maps to x 70–326 (5.333 px/month) -->
-          <g class="grid"><line x1="70" y1="6" x2="70" y2="104"/><line x1="134" y1="6" x2="134" y2="104"/><line x1="198" y1="6" x2="198" y2="104"/><line x1="262" y1="6" x2="262" y2="104"/><line x1="326" y1="6" x2="326" y2="104"/></g>
-          <text class="lbl" x="0" y="27">Standard</text>
-          <rect class="bar-slow" x="262" y="14" width="64" height="18" rx="9"/>
-          <text class="val" x="256" y="27" text-anchor="end">36–48</text>
-          <text class="lbl" x="0" y="59">Container</text>
-          <rect class="bar-fast" x="134" y="46" width="32" height="18" rx="9"/>
-          <text class="val" x="172" y="59">12–18</text>
-          <text class="lbl" x="0" y="91">Hybrid</text>
-          <rect class="bar-fast" x="134" y="78" width="32" height="18" rx="9"/>
-          <text class="val" x="172" y="91">12–18</text>
-          <g class="tick" text-anchor="middle"><text x="70" y="120">0</text><text x="134" y="120">12</text><text x="198" y="120">24</text><text x="262" y="120">36</text><text x="326" y="120">48</text></g>
-        </svg>
+        <div class="ltc" role="img" aria-label="Lead time: Standard DC 36 to 48 months, Containerized DC 12 to 18 months, Hybrid DC 12 to 18 months">
+          <div class="ltc-row"><span class="ltc-lbl">Standard</span><div class="ltc-track"><span class="ltc-bar slow" style="--s:36;--e:48"></span><span class="ltc-val before" style="--s:36">36–48</span></div></div>
+          <div class="ltc-row"><span class="ltc-lbl">Container</span><div class="ltc-track"><span class="ltc-bar" style="--s:12;--e:18"></span><span class="ltc-val" style="--e:18">12–18</span></div></div>
+          <div class="ltc-row"><span class="ltc-lbl">Hybrid</span><div class="ltc-track"><span class="ltc-bar" style="--s:12;--e:18"></span><span class="ltc-val" style="--e:18">12–18</span></div></div>
+          <div class="ltc-row ltc-axis" aria-hidden="true"><span></span><div class="ltc-track"><span style="--t:0">0</span><span style="--t:12">12</span><span style="--t:24">24</span><span style="--t:36">36</span><span style="--t:48">48</span></div></div>
+        </div>
+      </div>
       </div>
 
       <div class="tabs" role="tablist" aria-label="Build types" style="--i:2">
@@ -361,6 +446,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
         <button role="tab" id="t-cdc" aria-controls="p-cdc" aria-selected="false" tabindex="-1">CONTAINER</button>
         <button role="tab" id="t-hdc" aria-controls="p-hdc" aria-selected="true">HYBRID</button>
       </div>
+      <div class="panels">
       <div class="panel" role="tabpanel" id="p-hdc" aria-labelledby="t-hdc">
         <div class="pic"><img src="img/hdc.webp" alt="Hybrid data center rendering: steel building with modular cooling and power units" width="720" height="426"></div>
         <div class="body">
@@ -384,6 +470,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
           <p class="lt">36–48 months<small>10 MW estimate, unrenovated site</small></p>
           <ul class="ticks"><li>High durability and weather resistance</li><li>High customizability</li><li>High land utilization</li></ul>
         </div>
+      </div>
       </div>
     </div>
   </section>
@@ -462,6 +549,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
         <h2 id="twin-h">Built virtually first with NVIDIA<sup class="tm">®</sup> Omniverse DSX<sup class="tm">™</sup></h2>
         <p>Our 27 MW AI Factory has a full digital twin for engineering validation and deployment.</p>
       </div>
+      <div class="twin-body">
       <figure><img src="img/twin.webp" alt="Digital twin view of the Foxconn 27 MW data center" width="1000" height="576" loading="lazy"></figure>
       <div class="loop">
         <div><i>01</i><b>Simulate &amp; predict</b><span>Physics simulation with DSX SimReady finds risks before deployment.</span></div>
@@ -469,6 +557,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
         <div><i>03</i><b>Improve</b><span>OT monitoring validates results and feeds the next cycle.</span></div>
       </div>
       <p class="loop-note">A closed loop for maximum tokens per watt</p>
+      </div>
     </div>
   </section>
 
@@ -479,6 +568,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
         <h2 id="ref-h">Start from a proven unit, then scale</h2>
         <p>Next-gen hybrid AI Factory: steel-structure IT halls with modular power and cooling.</p>
       </div>
+      <div class="ref-body">
       <div class="ref-pics">
         <figure><img src="img/campus27.webp" alt="27 MW campus rendering" loading="lazy"><figcaption>27 MW</figcaption></figure>
         <figure><img src="img/campus33.webp" alt="3.3 MW site rendering" loading="lazy"><figcaption>3.3 MW</figcaption></figure>
@@ -498,6 +588,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
       </div>
       <div class="shared">
         <span class="chip">Uptime Tier III (N+1)</span><span class="chip">Estimated PUE ≤ 1.20</span><span class="chip">0.136 MW per GB300 rack</span><span class="chip">72 GPUs per rack</span>
+      </div>
       </div>
     </div>
   </section>
@@ -519,8 +610,10 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
 
   <div class="wrap">
     <section class="contact" id="contact" aria-labelledby="contact-h">
-      <h2 id="contact-h">Let's discuss your AI Factory project</h2>
-      <p>Share a few details and our AI DC team will review your inquiry and get in touch.</p>
+      <div class="contact-intro">
+        <h2 id="contact-h">Let's discuss your AI Factory project</h2>
+        <p>Share a few details and our AI DC team will review your inquiry and get in touch.</p>
+      </div>
       <form id="lead" novalidate>
         <label>Name<input id="f-name" name="name" autocomplete="name" required></label>
         <label>Company<input id="f-company" name="company" autocomplete="organization" required></label>
@@ -570,21 +663,21 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var W=0,H=0,dpr=Math.min(window.devicePixelRatio||1,1.5),t=0,running=true,raf=0;
   var strands=[];for(var i=0;i<16;i++){strands.push({k:(i-8)/8,sp:.6+Math.random()*.8,ph:Math.random()*6.28})}
-  var GR=null,CY=160,h1=document.getElementById('h1');
-  function size(){var r=c.getBoundingClientRect();W=r.width;H=r.height;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);var hr=h1.getBoundingClientRect();CY=hr.top-r.top+hr.height/2;GR=x.createLinearGradient(W*.1,0,W,0);GR.addColorStop(0,'rgba(105,227,254,0)');GR.addColorStop(.35,'rgba(105,227,254,.3)');GR.addColorStop(.8,'rgba(161,131,231,.3)');GR.addColorStop(1,'rgba(90,82,227,0)')}
+  var GR=null,CY=160,CX=200,AW=170,h1=document.getElementById('h1');
+  function size(){var r=c.getBoundingClientRect();W=r.width;H=r.height;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);var hr=h1.getBoundingClientRect();CY=hr.top-r.top+hr.height/2;CX=hr.left-r.left+hr.width/2;AW=Math.min(W*.44,hr.width*.6,W>=1024?600:360);var al=W>=1024?.48:.3;GR=x.createLinearGradient(W*.1,0,W,0);GR.addColorStop(0,'rgba(105,227,254,0)');GR.addColorStop(.35,'rgba(105,227,254,'+al+')');GR.addColorStop(.8,'rgba(161,131,231,'+al+')');GR.addColorStop(1,'rgba(90,82,227,0)')}
   function pt(s,u,time){
-    var cx=W/2,cy=CY,a=Math.min(W*.44,340);
+    var cx=CX,cy=CY,a=AW;
     var d=1+Math.sin(u)*Math.sin(u);
     var px=a*Math.cos(u)/d, py=a*Math.sin(u)*Math.cos(u)/d;
-    var wob=s.k*(18+10*Math.sin(u*2+time*.6+s.ph));
-    return [cx+px+wob*.3, cy+py*.9+wob];
+    var wob=s.k*(18+10*Math.sin(u*2+time*.6+s.ph))*Math.max(1,a/220);
+    return [cx+px+wob*.3, cy+py*(a>400?.68:.9)+wob*(a>400?.7:1)];
   }
   function draw(){
     x.clearRect(0,0,W,H);
     x.globalCompositeOperation='lighter';
     for(var j=0;j<strands.length;j++){
       var s=strands[j];
-      x.strokeStyle=GR;x.lineWidth=.8;x.beginPath();
+      x.strokeStyle=GR;x.lineWidth=AW>400?1:.8;x.beginPath();
       for(var u=0;u<=6.29;u+=.06){var p=pt(s,u,t);u===0?x.moveTo(p[0],p[1]):x.lineTo(p[0],p[1])}
       x.stroke();
       var q=pt(s,(t*.35*s.sp+s.ph)%6.283,t);
@@ -603,6 +696,12 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
   var tabs=[].slice.call(document.querySelectorAll('[role=tab]'));
   function sel(b){b.parentNode.style.setProperty('--i',tabs.indexOf(b));tabs.forEach(function(o){var on=o===b;o.setAttribute('aria-selected',on);o.tabIndex=on?0:-1;document.getElementById(o.getAttribute('aria-controls')).hidden=!on})}
   tabs.forEach(function(b,i){b.addEventListener('click',function(){sel(b)});b.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowLeft'){var n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];sel(n);n.focus()}})});
+
+  /* Delivery stages: always open on tablet and desktop */
+  var mq=window.matchMedia('(min-width:640px)'),dets=[].slice.call(document.querySelectorAll('.steps details'));
+  function openAll(){if(mq.matches)dets.forEach(function(d){d.open=true})}
+  openAll();if(mq.addEventListener)mq.addEventListener('change',openAll);
+  dets.forEach(function(d){d.querySelector('summary').addEventListener('click',function(e){if(mq.matches)e.preventDefault()})});
 
   /* Chapter rail highlight */
   var links=[].slice.call(document.querySelectorAll('.rail a'));
