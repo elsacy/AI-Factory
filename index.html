@@ -207,6 +207,9 @@ label{display:grid;gap:6px;font-size:15px;color:var(--muted)}
 textarea{resize:vertical;min-height:96px;line-height:1.5}
 input,select,textarea{font:400 16px var(--f-body);color:var(--fg);background:rgba(7,6,13,.6);border:1px solid var(--line);border-radius:10px;padding:12px;width:100%}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--cyan)}
+.consent{display:flex;align-items:flex-start;gap:10px;color:var(--muted);line-height:1.45;cursor:pointer}
+.consent input{flex:none;width:18px;height:18px;margin:3px 0 0;padding:0;accent-color:var(--cyan)}
+.btn:disabled{opacity:.6;cursor:wait}
 .form-msg{font-size:16px;color:var(--cyan);min-height:1.4em}
 footer{padding-block:40px 110px;color:var(--muted);font-size:13px;display:grid;gap:6px;text-align:center}
 footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-spacing:.1em}
@@ -624,7 +627,9 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
         <h2 id="contact-h">Let's discuss your AI Factory project</h2>
         <p>Share a few details and our AI DC team will review your inquiry and get in touch.</p>
       </div>
-      <form id="lead" novalidate>
+      <form id="lead" name="inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+        <input type="hidden" name="form-name" value="inquiry">
+        <p hidden><label>Leave this field empty<input id="f-bot" name="bot-field" tabindex="-1" autocomplete="off"></label></p>
         <label>Name<input id="f-name" name="name" autocomplete="name" required></label>
         <label>Company<input id="f-company" name="company" autocomplete="organization" required></label>
         <label class="full">Work email<input id="f-email" name="email" type="email" autocomplete="email" required></label>
@@ -650,6 +655,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
         <label class="full"><span>Message <span class="opt">(optional)</span></span>
           <textarea id="f-msg" name="message" rows="4" placeholder="Tell us about your site, timeline or requirements"></textarea>
         </label>
+        <label class="full consent"><input type="checkbox" id="f-consent" name="consent" value="Agreed" required><span>I agree that Foxconn may use the information above to respond to my inquiry.</span></label>
         <button class="btn full" type="submit">Submit inquiry</button>
         <p class="form-msg full" id="form-msg" role="status"></p>
       </form>
@@ -731,11 +737,18 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
     fo.observe(document.getElementById('top0'));fo.observe(document.getElementById('contact'));
   }
 
-  /* Lead form (draft: not connected) */
+  /* Inquiry form: submitted to Netlify Forms with fetch, result shown inline */
   document.getElementById('lead').addEventListener('submit',function(e){
-    e.preventDefault();var f=e.target,m=document.getElementById('form-msg');
-    var ok=f.name.value.trim()&&f.company.value.trim()&&/^\S+@\S+\.\S+$/.test(f.email.value.trim());
-    m.textContent=ok?'Preview only: once connected, this form will send your inquiry to our AI DC team.':'Please fill in your name, company and a valid work email.';
+    e.preventDefault();
+    var f=e.target,el=f.elements,m=document.getElementById('form-msg'),btn=f.querySelector('button[type=submit]');
+    var ok=el['name'].value.trim()&&el['company'].value.trim()&&/^\S+@\S+\.\S+$/.test(el['email'].value.trim());
+    if(!ok){m.textContent='Please fill in your name, company and a valid work email.';return}
+    if(!el['consent'].checked){m.textContent='Please tick the box to agree to how we use your information.';return}
+    btn.disabled=true;m.textContent='Sending your inquiry…';
+    fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()})
+      .then(function(r){if(!r.ok)throw new Error(r.status);f.reset();m.textContent='Thank you. Our AI DC team will review your inquiry and get in touch.'})
+      .catch(function(){m.textContent='Your inquiry could not be sent. Please try again in a moment.'})
+      .then(function(){btn.disabled=false});
   });
 })();
 </script>
