@@ -177,9 +177,9 @@ section.ch{padding-block:56px 8px}
 .loop-note{margin-top:10px;font-size:15px;color:var(--muted);text-align:center}
 
 /* Reference designs */
-.ref-pics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.ref-pics{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:12px}
 .ref-pics figure{margin:0;border-radius:12px;overflow:hidden;border:1px solid var(--line);position:relative}
-.ref-pics img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.ref-pics img{display:block;width:100%;height:auto;aspect-ratio:2/1;object-fit:cover}
 .ref-pics figcaption{position:absolute;left:8px;top:8px;font:400 11px/1 var(--f-display);background:rgba(7,6,13,.75);padding:6px 8px;border-radius:6px}
 .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
 table{width:100%;border-collapse:collapse;font-size:16px;min-width:340px}
@@ -241,6 +241,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
   .steps summary::after{display:none}
   .metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
   .partners{grid-template-columns:repeat(4,1fr)}
+  .ref-pics{grid-template-columns:1fr 1fr}
   .contact{padding:32px}
   form{grid-template-columns:1fr 1fr}
   form .full{grid-column:1/-1}
@@ -305,7 +306,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
 
   .ref-body{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:auto 1fr;gap:12px 24px;align-items:start}
   .ref-pics{grid-row:span 2;grid-template-columns:1fr;gap:12px;margin-bottom:0}
-  .ref-pics img{aspect-ratio:16/9}
+  .ref-pics img{aspect-ratio:2/1}
   .shared{margin-top:0}
 
   .contact{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:24px 56px;padding:48px;margin-top:96px}
@@ -373,7 +374,7 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
       </div>
 
       <figure class="hero-img">
-        <img src="img/campus27.webp" width="1100" height="682" alt="Aerial rendering of the 27 MW hybrid AI Factory campus">
+        <img src="img/ref-hdc.webp" width="1200" height="600" alt="Rendering of the 27 MW hybrid AI Factory">
         <figcaption>27 MW Hybrid AI Factory · campus layout demonstration</figcaption>
       </figure>
     </div>
@@ -583,8 +584,8 @@ footer .inf{font-family:var(--f-display);font-size:13px;color:var(--fg);letter-s
       </div>
       <div class="ref-body">
       <div class="ref-pics">
-        <figure><img src="img/campus27.webp" alt="27 MW campus rendering" loading="lazy"><figcaption>27 MW</figcaption></figure>
-        <figure><img src="img/campus33.webp" alt="3.3 MW site rendering" loading="lazy"><figcaption>3.3 MW</figcaption></figure>
+        <figure><img src="img/ref-hdc.webp" width="1200" height="600" alt="27 MW reference design: hybrid data center rendering" loading="lazy"><figcaption>27 MW</figcaption></figure>
+        <figure><img src="img/ref-cdc.webp" width="1200" height="599" alt="3.3 MW reference design: containerized data center rendering" loading="lazy"><figcaption>3.3 MW</figcaption></figure>
       </div>
       <div class="tbl-wrap">
         <table>
